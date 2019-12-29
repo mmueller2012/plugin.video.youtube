@@ -89,8 +89,9 @@ class XbmcRunner(AbstractProviderRunner):
     def _add_directory(self, context, directory_item, item_count=0):
         major_version = context.get_system_version().get_version()[0]
 
-        art = {'icon': 'DefaultFolder.png',
-               'thumb': directory_item.get_image()}
+        thumb = directory_item.get_image()
+        art = {'icon': thumb if thumb else 'DefaultFolder.png',
+               'thumb': thumb}
 
         if major_version > 17:
             item = xbmcgui.ListItem(label=directory_item.get_name(), offscreen=True)
