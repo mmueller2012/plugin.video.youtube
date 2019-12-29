@@ -265,6 +265,7 @@ def update_video_infos(provider, context, video_id_dict, playlist_item_id_dict=N
 
         snippet = yt_item['snippet']  # crash if not conform
         play_data = yt_item['play_data']
+        statistics = yt_item.get('statistics', {})
         video_item.live = snippet.get('liveBroadcastContent') == 'live'
 
         # duration
@@ -276,6 +277,19 @@ def update_video_infos(provider, context, video_id_dict, playlist_item_id_dict=N
                 duration = utils.datetime_parser.parse(duration)
                 # we subtract 1 seconds because YouTube returns +1 second to much
                 video_item.set_duration_from_seconds(duration.seconds - 1)
+
+        # play count
+        if statistics.get('viewCount'):
+            video_item.set_youtube_play_count(int(statistics.get('viewCount')))
+
+        # rating
+        if statistics.get('likeCount') and statistics.get('dislikeCount'):
+            likes = int(statistics.get('likeCount'))
+            dislikes = int(statistics.get('dislikeCount'))
+            try:
+                video_item.set_rating(10.0 * likes / (likes+dislikes))
+            except ZeroDivisionError:
+                video_item.set_rating(0)
 
         if not video_item.live and use_play_data:
             # play count
