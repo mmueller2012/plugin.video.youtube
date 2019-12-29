@@ -1376,7 +1376,7 @@ class Provider(kodion.AbstractProvider):
         settings = context.get_settings()
         _ = self.get_client(context)  # required for self.is_logged_in()
 
-        self.set_content_type(context, kodion.constants.content_type.FILES)
+        self.set_content_type(context, "playlists")
 
         result = []
 
