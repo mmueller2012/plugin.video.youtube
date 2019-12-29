@@ -83,6 +83,14 @@ def _process_last_played(info_labels, name, param):
         except AttributeError:
             info_labels[name] = param
 
+def _process_number_string(info_labels, name, param):
+    if param:
+        if param >= 1000000:
+            info_labels[name] = "%.1fM" % (param / 1000000.0,)
+        elif param >= 1000:
+            info_labels[name] = "%.1fK" % (param / 1000.0,)
+        else:
+            info_labels[name] = "%d" % (param,)
 
 def create_from_item(base_item):
     info_labels = {}
@@ -162,6 +170,8 @@ def create_from_item(base_item):
 
         # 'cast' = [] (list)
         _process_list_value(info_labels, 'cast', base_item.get_cast())
+
+        _process_number_string(info_labels, 'tvshowtitle', base_item.get_youtube_play_count())
 
     # Audio and Video
     if isinstance(base_item, AudioItem) or isinstance(base_item, VideoItem):
