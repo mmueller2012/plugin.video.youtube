@@ -54,12 +54,19 @@ class VideoItem(BaseItem):
         self._subscription_id = None
         self._playlist_id = None
         self._playlist_item_id = None
+        self._youtube_playcount = None
 
     def set_play_count(self, play_count):
         self._play_count = int(play_count)
 
     def get_play_count(self):
         return self._play_count
+
+    def set_youtube_play_count(self, play_count):
+        self._youtube_playcount = int(play_count)
+
+    def get_youtube_play_count(self):
+        return self._youtube_playcount
 
     def add_artist(self, artist):
         if self._artist is None:
